@@ -69,12 +69,12 @@ func (b *ScenarioBuilder) Basic() *RecipeInstaller {
 	}
 	statusRollup := execution.NewStatusRollup(ers)
 	v := validation.NewMockRecipeValidator()
+	re := execution.NewMockRecipeExecutor()
 
 	pf := discovery.NewRegexProcessFilterer(rf)
 	ff := recipes.NewRecipeFileFetcher()
 	d := discovery.NewPSUtilDiscoverer(pf)
 	gff := discovery.NewGlobFileFilterer()
-	re := execution.NewGoTaskRecipeExecutor()
 	p := ux.NewPromptUIPrompter()
 	s := ux.NewSpinner()
 
@@ -209,6 +209,18 @@ install:
 			File: `
 ---
 name: Recommended recipe
+install:
+  version: "3"
+  tasks:
+    default:
+`,
+		},
+		{
+			Name:           "Another recommended recipe",
+			ValidationNRQL: "test NRQL",
+			File: `
+---
+name: Another recommended recipe
 install:
   version: "3"
   tasks:
